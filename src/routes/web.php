@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ContactController;
+use App\Http\Controllers\BlogController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +14,16 @@ use App\Http\Controllers\ContactController;
 |
 */
 
-Route::get('/', [ContactController::class, 'index']);
-Route::post('/contacts/confirm', [ContactController::class, 'confirm']);
-Route::post('/contacts', [ContactController::class, 'store']);
+Route::get('/', [BlogController::class, 'index'])->name('index');
+
+// Breezeの認証ルートを必ず含める
+require __DIR__.'/auth.php';
+
+
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/admin', [BlogController::class, 'create'])->name('admin.blog.create');
+    Route::post('/admin/store', [BlogController::class, 'store'])->name('admin.blog.store');
+    Route::get('/admin/edit/{id}', [BlogController::class, 'edit'])->name('admin.blog.edit');
+    Route::post('/admin/update/{id}', [BlogController::class, 'update'])->name('admin.blog.update');
+    Route::delete('/admin/delete/{id}', [BlogController::class, 'destroy'])->name('admin.blog.destroy');
+});
