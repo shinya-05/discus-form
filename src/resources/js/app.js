@@ -5,3 +5,11 @@ import Alpine from 'alpinejs';
 window.Alpine = Alpine;
 
 Alpine.start();
+
+const burger = document.querySelector('.burger');
+const nav = document.querySelector('.nav--list');
+
+burger.addEventListener('click', e => {
+  burger.dataset.state === 'closed' ? burger.dataset.state = "open" : burger.dataset.state = "closed";
+  nav.dataset.state === "closed" ? nav.dataset.state = "open" : nav.dataset.state = "closed";
+});
